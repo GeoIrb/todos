@@ -6,9 +6,11 @@ type UserInfo struct {
 	Email    string
 	Username string
 	Password string
+	IsActive bool
 }
 
 // User storage filter.
 type UserFilter struct {
-	ID string
+	ID    *string
+	Email *string
 }

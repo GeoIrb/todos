@@ -19,21 +19,7 @@ type Storage struct {
 
 var _ storage.User = &Storage{}
 
-// New temporarily saves the password for the new user.
-func (s *Storage) New(ctx context.Context, user storage.UserInfo) error {
-	return s.cache.SetPassword(ctx, user.Email, user.Password, s.passwordTTL)
-}
-
-// Create saves user info..
-func (s *Storage) Create(ctx context.Context, user storage.UserInfo) (storage.UserInfo, error) {
-	u, err := s.db.Insert(ctx, database.UserInfo(user))
-	return storage.UserInfo(u), err
-}
-
-func (s *Storage) Get(ctx context.Context, filter storage.UserFilter) (storage.UserInfo, error) {
-	return storage.UserInfo{}, nil
-}
-
+// NewStorage return storage for user.
 func NewStorage(
 	db database.User,
 	cache cache.User,
@@ -46,4 +32,21 @@ func NewStorage(
 
 		passwordTTL: passwordTTL,
 	}
+}
+
+// New temporarily saves the password for the new user.
+func (s *Storage) New(ctx context.Context, user storage.UserInfo) error {
+	return s.cache.SetPassword(ctx, user.Email, user.Password, s.passwordTTL)
+}
+
+// Create saves user info..
+func (s *Storage) Create(ctx context.Context, user storage.UserInfo) error {
+	return s.db.Insert(ctx, user)
+}
+
+func (s *Storage) Get(ctx context.Context, filter storage.UserFilter) ([]storage.UserInfo, error) {
+	if password, isExist, err := s.cache.GetPassword(ctx, mail); isExist || err != nil{
+		
+	}
+	return s.db.Select(ctx, filter)
 }
