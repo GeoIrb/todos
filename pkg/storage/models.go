@@ -4,13 +4,13 @@ package storage
 type UserInfo struct {
 	ID       string
 	Email    string
-	Username string
 	Password string
 	IsActive bool
 }
 
 // User storage filter.
 type UserFilter struct {
-	ID    *string
-	Email *string
+	ID       *string
+	Email    *string
+	Password *string
 }

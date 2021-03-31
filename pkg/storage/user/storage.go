@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/geoirb/todos/pkg/cache"
@@ -39,14 +40,26 @@ func (s *Storage) New(ctx context.Context, user storage.UserInfo) error {
 	return s.cache.SetPassword(ctx, user.Email, user.Password, s.passwordTTL)
 }
 
-// Create saves user info..
+// Create saves user info.
 func (s *Storage) Create(ctx context.Context, user storage.UserInfo) error {
 	return s.db.Insert(ctx, user)
 }
 
-func (s *Storage) Get(ctx context.Context, filter storage.UserFilter) ([]storage.UserInfo, error) {
-	if password, isExist, err := s.cache.GetPassword(ctx, mail); isExist || err != nil{
-		
+// Get user by filter.
+func (s *Storage) Get(ctx context.Context, filter storage.UserFilter) (user storage.UserInfo, err error) {
+	if filter.Email == nil || filter.Password == nil {
+		err = fmt.Errorf("not found params")
+		return
 	}
-	return s.db.Select(ctx, filter)
+	password, isExist, err := s.cache.GetPassword(ctx, *filter.Email)
+	if isExist {
+		user.Password = password
+		return user, err
+	}
+	return s.db.SelectOne(ctx, filter)
+}
+
+// Select users by filter.
+func (s *Storage) Select(ctx context.Context, filter storage.UserFilter) ([]storage.UserInfo, error) {
+	return s.db.SelectList(ctx, filter)
 }
