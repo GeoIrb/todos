@@ -44,7 +44,6 @@ func NewUser(
 		selectUserList: selectUserList,
 	}
 	connectCfg := fmt.Sprintf(connectLayout, host, port, user, password, database)
-
 	u.connect = func() (*sqlx.DB, error) {
 		return sqlx.Connect(dbDriver, connectCfg)
 	}

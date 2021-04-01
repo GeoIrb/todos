@@ -42,7 +42,11 @@ func (s *Storage) New(ctx context.Context, user storage.UserInfo) error {
 
 // Create saves user info.
 func (s *Storage) Create(ctx context.Context, user storage.UserInfo) error {
-	return s.db.Insert(ctx, user)
+	if err := s.db.Insert(ctx, user); err != nil {
+		return err
+	}
+	s.cache.DeletePassword(ctx,user.Email)
+	return nil
 }
 
 // Get user by filter.

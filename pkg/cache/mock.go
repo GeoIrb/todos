@@ -7,16 +7,20 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// CacheMock ...
 type CacheMock struct {
 	mock.Mock
 }
 
-func (m *CacheMock) SetPassword(ctx context.Context, mail, password string, ttl time.Duration) (err error) {
-	args := m.Called(ctx, mail, password, ttl)
+// SetPassword ...
+func (m *CacheMock) SetPassword(ctx context.Context, email, password string, ttl time.Duration) (err error) {
+	args := m.Called(ctx, email, password, ttl)
 	return args.Error(0)
 }
-func (m *CacheMock) GetPassword(ctx context.Context, mail string) (password string, isExist bool, err error) {
-	args := m.Called(ctx, mail)
+
+// GetPassword ...
+func (m *CacheMock) GetPassword(ctx context.Context, email string) (password string, isExist bool, err error) {
+	args := m.Called(ctx, email)
 
 	var ok bool
 	if password, ok = args.Get(0).(string); !ok {
@@ -29,4 +33,8 @@ func (m *CacheMock) GetPassword(ctx context.Context, mail string) (password stri
 
 	err = args.Error(0)
 	return
+}
+
+func (m *CacheMock) DeletePassword(ctx context.Context, email string) {
+	m.Called(ctx, email)
 }

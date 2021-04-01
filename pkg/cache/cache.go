@@ -7,6 +7,7 @@ import (
 
 // User cache.
 type User interface {
-	SetPassword(ctx context.Context, mail, password string, ttl time.Duration) (err error)
-	GetPassword(ctx context.Context, mail string) (password string, isExist bool, err error)
+	SetPassword(ctx context.Context, email, password string, ttl time.Duration) (err error)
+	GetPassword(ctx context.Context, email string) (password string, isExist bool, err error)
+	DeletePassword(ctx context.Context, email string)
 }

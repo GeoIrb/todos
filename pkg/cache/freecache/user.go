@@ -26,18 +26,18 @@ func NewUser(
 }
 
 // SetPassword saves temporary password for new user.
-func (c *User) SetPassword(ctx context.Context, mail, password string, ttl time.Duration) (err error) {
-	return c.cache.Set(
-		[]byte(mail),
+func (u *User) SetPassword(ctx context.Context, email, password string, ttl time.Duration) (err error) {
+	return u.cache.Set(
+		[]byte(email),
 		[]byte(password),
 		int(ttl.Seconds()),
 	)
 }
 
 // GetPassword by email.
-func (c *User) GetPassword(ctx context.Context, mail string) (password string, isExist bool, err error) {
+func (u *User) GetPassword(ctx context.Context, email string) (password string, isExist bool, err error) {
 	var value []byte
-	if value, err = c.cache.Get([]byte(mail)); err != nil || value == nil {
+	if value, err = u.cache.Get([]byte(email)); err != nil || value == nil {
 		isExist = false
 		if err == freecache.ErrNotFound {
 			err = nil
@@ -46,4 +46,8 @@ func (c *User) GetPassword(ctx context.Context, mail string) (password string, i
 	}
 	password = string(value)
 	return
+}
+
+func (u *User) DeletePassword(ctx context.Context, email string) {
+	u.cache.Del([]byte(email))
 }
