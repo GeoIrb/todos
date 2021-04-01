@@ -10,4 +10,6 @@ require (
 	github.com/sethvargo/go-password v0.2.0
 	github.com/stretchr/testify v1.7.0
 	github.com/xhit/go-simple-mail v2.2.2+incompatible
+	google.golang.org/grpc v1.32.0
+	google.golang.org/protobuf v1.26.0
 )

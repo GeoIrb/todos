@@ -3,8 +3,9 @@ package database
 import (
 	"context"
 
-	"github.com/geoirb/todos/pkg/storage"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/geoirb/todos/pkg/storage"
 )
 
 // DatabaseMock ...

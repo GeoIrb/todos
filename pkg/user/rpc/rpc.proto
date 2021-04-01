@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package rpc;
+
+option go_package = ".;rpc"; 
+
+
+service Auth{
+    rpc Authorization(Request) returns (Response){}
+}
+
+message Request{
+    string token = 1;
+}
+
+message Response{
+    string id = 1;
+}

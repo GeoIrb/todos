@@ -13,7 +13,7 @@ type Hash struct {
 }
 
 // New ...
-func New(
+func NewHash(
 	hash func() hash.Hash,
 	salt []byte,
 ) *Hash {
@@ -22,8 +22,6 @@ func New(
 		salt: salt,
 	}
 }
-
-var _ Hash = &Hash{}
 
 // Password returns password hash with salt
 func (h *Hash) Password(ctx context.Context, password string) string {

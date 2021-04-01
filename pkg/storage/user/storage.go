@@ -45,7 +45,7 @@ func (s *Storage) Create(ctx context.Context, user storage.UserInfo) error {
 	if err := s.db.Insert(ctx, user); err != nil {
 		return err
 	}
-	s.cache.DeletePassword(ctx,user.Email)
+	s.cache.DeletePassword(ctx, user.Email)
 	return nil
 }
 
@@ -57,6 +57,7 @@ func (s *Storage) Get(ctx context.Context, filter storage.UserFilter) (user stor
 	}
 	password, isExist, err := s.cache.GetPassword(ctx, *filter.Email)
 	if isExist {
+		user.Email = *filter.Email
 		user.Password = password
 		return user, err
 	}
