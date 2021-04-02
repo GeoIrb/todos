@@ -8,8 +8,11 @@ require (
 	github.com/fasthttp/router v1.3.10
 	github.com/go-kit/kit v0.10.0
 	github.com/jmoiron/sqlx v1.3.1
+	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/lib/pq v1.2.0
 	github.com/sethvargo/go-password v0.2.0
 	github.com/stretchr/testify v1.7.0
+	github.com/valyala/fasthttp v1.22.0
 	github.com/xhit/go-simple-mail v2.2.2+incompatible
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.26.0

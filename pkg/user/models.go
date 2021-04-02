@@ -25,11 +25,11 @@ type Create struct {
 
 // Filter user.
 type Filter struct {
-	ID       *string
-	Email    *string
+	ID    *int
+	Email *string
 }
 
-type User struct {
-	ID    string
+type UserInfo struct {
+	ID    int
 	Email string
 }

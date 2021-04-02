@@ -13,20 +13,6 @@ type SMTP struct {
 	server     *mail.SMTPServer
 }
 
-// Send message to dst.
-func (s *SMTP) Send(ctx context.Context, dst, message string) error {
-	email := mail.NewMSG()
-	email.SetFrom(s.srcAddress).
-		AddTo(dst).
-		SetBody(mail.TextPlain, message)
-
-	client, err := s.server.Connect()
-	if err != nil {
-		return err
-	}
-	return email.Send(client)
-}
-
 // New ...
 func New(
 	address string,
@@ -49,4 +35,18 @@ func New(
 			Encryption:     mail.EncryptionSSL,
 		},
 	}
+}
+
+// Send message to dst.
+func (s *SMTP) Send(ctx context.Context, dst, message string) error {
+	email := mail.NewMSG()
+	email.SetFrom(s.srcAddress).
+		AddTo(dst).
+		SetBody(mail.TextPlain, message)
+
+	client, err := s.server.Connect()
+	if err != nil {
+		return err
+	}
+	return email.Send(client)
 }

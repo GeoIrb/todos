@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"github.com/go-kit/kit/log"
@@ -36,6 +37,26 @@ type Service struct {
 	logger log.Logger
 }
 
+func NewService(
+	storage storage.User,
+	email sender.Email,
+
+	hash hash,
+	token token,
+	jwt jwt,
+
+	logger log.Logger,
+) *Service {
+	return &Service{
+		storage: storage,
+		email:   email,
+		hash:    hash,
+		token:   token,
+		jwt:     jwt,
+		logger:  logger,
+	}
+}
+
 // Registration new user in system.
 func (s *Service) Registration(ctx context.Context, info Registartion) error {
 	logger := log.WithPrefix(s.logger, "method", "Registration", "email", info.Email)
@@ -67,7 +88,10 @@ func (s *Service) Registration(ctx context.Context, info Registartion) error {
 		return err
 	}
 
-	return s.storage.New(ctx, user)
+	if err = s.storage.New(ctx, user); err != nil {
+		level.Error(logger).Log("msg", "new user", "err", err)
+	}
+	return err
 }
 
 // Login user in system.
@@ -82,7 +106,7 @@ func (s *Service) Login(ctx context.Context, info Login) (auth Auth, err error) 
 
 	user, err := s.storage.Get(ctx, filter)
 	if err != nil {
-		level.Error(logger).Log("msg", "storage get", "err", err)
+		level.Error(logger).Log("msg", "get user", "err", err)
 		return
 	}
 
@@ -94,7 +118,10 @@ func (s *Service) Login(ctx context.Context, info Login) (auth Auth, err error) 
 		return
 	}
 
-	token, err := s.jwt.CreateToken(ctx, user.ID)
+	token, err := s.jwt.CreateToken(ctx, strconv.Itoa(user.ID))
+	if err != nil {
+		level.Error(logger).Log("msg", "create token", "err", err)
+	}
 	auth.Token = &token
 	return
 }
@@ -103,8 +130,10 @@ func (s *Service) Login(ctx context.Context, info Login) (auth Auth, err error) 
 func (s *Service) Create(ctx context.Context, info Create) (err error) {
 	logger := log.WithPrefix(s.logger, "method", "Create", "email", info.Email)
 
+	hashPassword := s.hash.Password(ctx, info.NewPassword)
 	filter := storage.UserFilter{
-		Email: &info.Email,
+		Email:    &info.Email,
+		Password: &hashPassword,
 	}
 
 	user, err := s.storage.Get(ctx, filter)
@@ -119,28 +148,30 @@ func (s *Service) Create(ctx context.Context, info Create) (err error) {
 		return
 	}
 
-	user.Password = s.hash.Password(ctx, info.NewPassword)
-	return s.storage.Create(ctx, user)
+	user.Password = hashPassword
+	if err = s.storage.Create(ctx, user); err != nil {
+		level.Error(logger).Log("msg", "create user", "err", err)
+	}
+	return
 }
 
 // Authorization token.
 func (s *Service) Authorization(ctx context.Context, token string) (id string, err error) {
 	parts := strings.Split(token, " ")
 	if len(parts) != 2 && parts[0] != "Bearer" {
-		err = ErrFiledAuthenticate
+		err = ErrFailedAuthenticate
 		return
 	}
 
 	var isValid bool
-	if isValid, id, err = s.jwt.Parse(ctx, parts[1]); !isValid && err != nil {
+	if isValid, id, err = s.jwt.Parse(ctx, parts[1]); !isValid {
 		err = ErrTokenExpired
-		return
 	}
 	return
 }
 
 // GetUserList by filter.
-func (s *Service) GetUserList(ctx context.Context, filter Filter) (users []User, err error) {
+func (s *Service) GetUserList(ctx context.Context, filter Filter) (users []UserInfo, err error) {
 	logger := log.WithPrefix(s.logger, "method", "GetUserList")
 
 	token := s.token.Get(ctx)
@@ -156,15 +187,15 @@ func (s *Service) GetUserList(ctx context.Context, filter Filter) (users []User,
 
 	storageUsers, err := s.storage.Select(ctx, userFilter)
 	if err != nil {
-		level.Error(logger).Log("msg", "storage select", "err", err)
+		level.Error(logger).Log("msg", "select users", "err", err)
 		return
 	}
 
-	users = make([]User, 0, len(storageUsers))
+	users = make([]UserInfo, 0, len(storageUsers))
 	for _, user := range storageUsers {
 		users = append(
 			users,
-			User{
+			UserInfo{
 				ID:    user.ID,
 				Email: user.Email,
 			},

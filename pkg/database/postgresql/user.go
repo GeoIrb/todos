@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 
 	"github.com/geoirb/todos/pkg/database"
 	"github.com/geoirb/todos/pkg/storage"
@@ -26,7 +27,6 @@ type User struct {
 var _ database.User = &User{}
 
 func NewUser(
-	dbDriver string,
 	connectLayout string,
 	host string,
 	port int,
@@ -45,7 +45,7 @@ func NewUser(
 	}
 	connectCfg := fmt.Sprintf(connectLayout, host, port, user, password, database)
 	u.connect = func() (*sqlx.DB, error) {
-		return sqlx.Connect(dbDriver, connectCfg)
+		return sqlx.Connect("postgres", connectCfg)
 	}
 	u.db, err = u.connect()
 	return
@@ -69,10 +69,12 @@ func (u *User) SelectOne(ctx context.Context, filter storage.UserFilter) (user s
 		return
 	}
 
-	var dbUser UserInfo
+	var dbUser userInfo
 	err = u.db.GetContext(ctx, &dbUser, u.selectUser, *filter.Email, *filter.Password)
+	if err != nil && err.Error() == "sql: no rows in result set" {
+		err = nil
+	}
 	user = storage.UserInfo(dbUser)
-
 	return
 }
 
@@ -80,18 +82,26 @@ func (u *User) SelectList(ctx context.Context, filter storage.UserFilter) (users
 	if err = u.check(); err != nil {
 		return
 	}
+	query := u.selectUserList
 
-	idArg, emailArg := "*", "*"
+	if filter.ID != nil || filter.Email != nil {
+		query += " WHERE"
+	}
+
 	if filter.ID != nil {
-		idArg = *filter.ID
+		query += fmt.Sprintf(" id = %d", *filter.ID)
+	}
+
+	if filter.ID != nil && filter.Email != nil {
+		query += " OR"
 	}
 
 	if filter.Email != nil {
-		emailArg = *filter.Email
+		query += fmt.Sprintf(` email = '%s'`, *filter.Email)
 	}
 
-	var dbUsers []UserInfo
-	err = u.db.SelectContext(ctx, &dbUsers, u.selectUserList, idArg, emailArg)
+	var dbUsers []userInfo
+	err = u.db.SelectContext(ctx, &dbUsers, query)
 
 	users = make([]storage.UserInfo, 0, len(dbUsers))
 	for _, user := range dbUsers {

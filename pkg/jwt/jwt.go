@@ -13,6 +13,17 @@ type JWT struct {
 	secret   []byte
 }
 
+// New ...
+func New(
+	tokenTTL time.Duration,
+	secret []byte,
+) *JWT {
+	return &JWT{
+		tokenTTL: tokenTTL,
+		secret:   secret,
+	}
+}
+
 // CreateToken to user.
 func (j *JWT) CreateToken(ctx context.Context, id string) (token string, err error) {
 	accessClaims := &tokenClaims{
@@ -41,15 +52,4 @@ func (j *JWT) Parse(ctx context.Context, token string) (isValid bool, id string,
 		isValid = jwtToken.Valid
 	}
 	return
-}
-
-// New ...
-func New(
-	tokenTTL time.Duration,
-	secret []byte,
-) *JWT {
-	return &JWT{
-		tokenTTL: tokenTTL,
-		secret:   secret,
-	}
 }

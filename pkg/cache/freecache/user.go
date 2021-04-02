@@ -30,20 +30,20 @@ func (u *User) SetPassword(ctx context.Context, email, password string, ttl time
 	return u.cache.Set(
 		[]byte(email),
 		[]byte(password),
-		int(ttl.Seconds()),
+		int(ttl),
 	)
 }
 
 // GetPassword by email.
 func (u *User) GetPassword(ctx context.Context, email string) (password string, isExist bool, err error) {
 	var value []byte
-	if value, err = u.cache.Get([]byte(email)); err != nil || value == nil {
-		isExist = false
+	if value, err = u.cache.Get([]byte(email)); err != nil {
 		if err == freecache.ErrNotFound {
 			err = nil
 		}
 		return
 	}
+	isExist = true
 	password = string(value)
 	return
 }
