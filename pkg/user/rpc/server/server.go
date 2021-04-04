@@ -18,7 +18,7 @@ type AuthServer struct {
 func (s *AuthServer) Authorization(ctx context.Context, req *rpc.Request) (res *rpc.Response, err error) {
 	id, err := s.svc.Authorization(ctx, req.Token)
 	res = &rpc.Response{
-		Id: id,
+		Id: int32(id),
 	}
 	return
 }

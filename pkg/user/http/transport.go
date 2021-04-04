@@ -9,13 +9,6 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-var responseCode map[error]int = map[error]int{
-	user.ErrUserIsExist:        http.StatusBadRequest,
-	user.ErrUserNotFound:       http.StatusUnauthorized,
-	user.ErrFailedAuthenticate: http.StatusUnauthorized,
-	user.ErrTokenExpired:       http.StatusUnauthorized,
-}
-
 // LoginTransport ...
 type LoginTransport interface {
 	DecodeRequest(req *fasthttp.Request) (login user.Login, err error)
@@ -81,7 +74,7 @@ type RegistrationUserTransport interface {
 
 type registrationUserTransport struct{}
 
-func NewRegistrationUserTransport() RegistrationUserTransport {
+func newRegistrationUserTransport() RegistrationUserTransport {
 	return &registrationUserTransport{}
 }
 
@@ -103,7 +96,7 @@ type CreateUserTransport interface {
 
 type createUserTransport struct{}
 
-func NewCreateUserTransport() CreateUserTransport {
+func newCreateUserTransport() CreateUserTransport {
 	return &createUserTransport{}
 }
 
@@ -116,6 +109,13 @@ func (t *createUserTransport) DecodeRequest(req *fasthttp.Request) (info user.Cr
 
 func (t *createUserTransport) EncodeResponse(res *fasthttp.Response, err error) {
 	responseBuilder(res, nil, err)
+}
+
+var responseCode map[error]int = map[error]int{
+	user.ErrUserIsExist:        http.StatusBadRequest,
+	user.ErrUserNotFound:       http.StatusUnauthorized,
+	user.ErrFailedAuthenticate: http.StatusUnauthorized,
+	user.ErrTokenExpired:       http.StatusUnauthorized,
 }
 
 func responseBuilder(res *fasthttp.Response, response interface{}, err error) {

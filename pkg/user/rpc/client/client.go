@@ -14,14 +14,14 @@ type AuthClient struct {
 var _ Auth = &AuthClient{}
 
 // Authorization token and return user data.
-func (c *AuthClient) Authorization(ctx context.Context, token string) (id string, err error) {
+func (c *AuthClient) Authorization(ctx context.Context, token string) (id int, err error) {
 	if res, err := c.client.Authorization(
 		ctx,
 		&rpc.Request{
 			Token: token,
 		},
 	); err == nil {
-		id = res.Id
+		id = int(res.Id)
 	}
 	return
 }

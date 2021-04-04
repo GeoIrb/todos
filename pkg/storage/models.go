@@ -14,3 +14,18 @@ type UserFilter struct {
 	Email    *string
 	Password *string
 }
+
+type TaskInfo struct {
+	ID       int
+	UserID   int
+	Title    string
+	Describe string
+	Deadline int
+}
+
+type TaskFilter struct {
+	ID     *int
+	UserID int
+	From   *int
+	To     *int
+}

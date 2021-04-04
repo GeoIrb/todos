@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"strconv"
 	"strings"
 
 	"github.com/go-kit/kit/log"
@@ -22,8 +21,8 @@ type hash interface {
 }
 
 type jwt interface {
-	CreateToken(ctx context.Context, id string) (token string, err error)
-	Parse(ctx context.Context, token string) (isValid bool, id string, err error)
+	CreateToken(ctx context.Context, id int) (token string, err error)
+	Parse(ctx context.Context, token string) (isValid bool, id int, err error)
 }
 
 type Service struct {
@@ -118,7 +117,7 @@ func (s *Service) Login(ctx context.Context, info Login) (auth Auth, err error) 
 		return
 	}
 
-	token, err := s.jwt.CreateToken(ctx, strconv.Itoa(user.ID))
+	token, err := s.jwt.CreateToken(ctx, user.ID)
 	if err != nil {
 		level.Error(logger).Log("msg", "create token", "err", err)
 	}
@@ -156,7 +155,7 @@ func (s *Service) Create(ctx context.Context, info Create) (err error) {
 }
 
 // Authorization token.
-func (s *Service) Authorization(ctx context.Context, token string) (id string, err error) {
+func (s *Service) Authorization(ctx context.Context, token string) (id int, err error) {
 	parts := strings.Split(token, " ")
 	if len(parts) != 2 && parts[0] != "Bearer" {
 		err = ErrFailedAuthenticate

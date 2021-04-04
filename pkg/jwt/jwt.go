@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -25,10 +26,10 @@ func New(
 }
 
 // CreateToken to user.
-func (j *JWT) CreateToken(ctx context.Context, id string) (token string, err error) {
+func (j *JWT) CreateToken(ctx context.Context, id int) (token string, err error) {
 	accessClaims := &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			Id:        id,
+			Id:        strconv.Itoa(id),
 			ExpiresAt: time.Now().Unix() + int64(j.tokenTTL.Seconds()),
 		},
 	}
@@ -38,7 +39,7 @@ func (j *JWT) CreateToken(ctx context.Context, id string) (token string, err err
 }
 
 // Parse token
-func (j *JWT) Parse(ctx context.Context, token string) (isValid bool, id string, err error) {
+func (j *JWT) Parse(ctx context.Context, token string) (isValid bool, id int, err error) {
 	var (
 		jwtToken = &jwt.Token{}
 		claims   = &tokenClaims{}
@@ -48,7 +49,7 @@ func (j *JWT) Parse(ctx context.Context, token string) (isValid bool, id string,
 	)
 
 	if jwtToken, err = jwt.ParseWithClaims(token, claims, keyFunc); jwtToken != nil {
-		id = claims.Id
+		id, _ = strconv.Atoi(claims.Id)
 		isValid = jwtToken.Valid
 	}
 	return

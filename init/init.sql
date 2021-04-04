@@ -9,5 +9,6 @@ CREATE TABLE public.todo (
 	id serial PRIMARY KEY,
     id_user NUMERIC NOT NULL,
 	title VARCHAR ( 255 ) NOT NULL,
-    deadline TIME NOT NULL
+	describe VARCHAR ( 255 ) NOT NULL,
+    deadline TIMESTAMP NOT NULL
 );
