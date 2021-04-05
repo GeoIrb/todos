@@ -5,10 +5,10 @@ CREATE TABLE public.user (
 	is_active BOOLEAN NOT NULL
 );
 
-CREATE TABLE public.todo (
+CREATE TABLE public.task (
 	id serial PRIMARY KEY,
     id_user NUMERIC NOT NULL,
 	title VARCHAR ( 255 ) NOT NULL,
-	describe VARCHAR ( 255 ) NOT NULL,
+	description VARCHAR ( 255 ) NOT NULL,
     deadline TIMESTAMP NOT NULL
 );

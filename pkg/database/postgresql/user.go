@@ -65,7 +65,7 @@ func (u *User) SelectOne(ctx context.Context, filter storage.UserFilter) (user s
 	}
 
 	if filter.Email == nil || filter.Password == nil {
-		err = fmt.Errorf("not found params")
+		err = errNotFoundParam
 		return
 	}
 

@@ -1,8 +1,35 @@
 ---
 version: "3"
 services:
+  todos:
+    build: 
+      context: ..
+      dockerfile: ./build/todos/Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      DB_HOST: database
+      AUTH_HOST: user
+    depends_on:
+      - user
+      - database
+    restart: always
+
+  user:
+    build: 
+      context: ..
+      dockerfile: ./build/user/Dockerfile
+    ports:
+      - 8080:8080
+      - 8070:8070
+    environment:
+      DB_HOST: database
+    depends_on: 
+      - database
+    restart: always
+
   database:
-    image: "postgres"
+    image: postgres
     ports:
       - "5432:5432"
     environment:
@@ -10,4 +37,6 @@ services:
       POSTGRES_PASSWORD: "secret-password"
       POSTGRES_DB: "todos"
     volumes:
-      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ../init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    

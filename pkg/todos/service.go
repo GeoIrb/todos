@@ -22,6 +22,22 @@ type Service struct {
 	logger log.Logger
 }
 
+func NewService(
+	auth client.Auth,
+	storage storage.Task,
+	token token,
+
+	logger log.Logger,
+) *Service {
+	return &Service{
+		auth:    auth,
+		storage: storage,
+		token:   token,
+
+		logger: logger,
+	}
+}
+
 func (s *Service) CreateTask(ctx context.Context, task TaskInfo) (err error) {
 	logger := log.WithPrefix(s.logger, "method", "NewTask")
 

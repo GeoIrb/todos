@@ -58,7 +58,7 @@ type configuration struct {
 }
 
 const (
-	prefixCfg   = "USER_SERVICE"
+	prefixCfg   = ""
 	serviceName = "user-service"
 )
 

@@ -20,9 +20,9 @@ func (t *createTaskTransport) DecodeRequest(req *fasthttp.Request) (token string
 	var request createTaskRequest
 	err = json.Unmarshal(req.Body(), &request)
 	task = todos.TaskInfo{
-		Title:    request.Title,
-		Describe: request.Describe,
-		Deadline: request.Deadline,
+		Title:       request.Title,
+		Description: request.Description,
+		Deadline:    request.Deadline,
 	}
 	return
 }
@@ -47,10 +47,10 @@ func (t *updateTaskTransport) DecodeRequest(req *fasthttp.Request) (token string
 	var request updateTaskRequest
 	err = json.Unmarshal(req.Body(), &request)
 	task = todos.TaskInfo{
-		ID:       request.ID,
-		Title:    request.Title,
-		Describe: request.Describe,
-		Deadline: request.Deadline,
+		ID:          request.ID,
+		Title:       request.Title,
+		Description: request.Description,
+		Deadline:    request.Deadline,
 	}
 	return
 }

@@ -16,11 +16,11 @@ type UserFilter struct {
 }
 
 type TaskInfo struct {
-	ID       int
-	UserID   int
-	Title    string
-	Describe string
-	Deadline int
+	ID          int
+	UserID      int
+	Title       string
+	Description string
+	Deadline    int
 }
 
 type TaskFilter struct {
