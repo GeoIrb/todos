@@ -38,7 +38,7 @@ type configuration struct {
 	DBSelectTask    string `envconfig:"DB_SELECT_TASK" default:"SELECT * FROM public.task WHERE user_id=$1"`
 	DBSelectOrderBy string `envconfig:"DB_SELECT_ORDER_BY" default:"deadline"`
 	DBUpdateTask    string `envconfig:"DB_SELECT_TASK" default:"UPDATE public.task SET title = $1, description = $2, deadline = $3 WHERE id = $4"`
-	DBDeleteTask    string `envconfig:"DB_DELETE_TASK" default:"DELETE FROM public.task WHERE id = $1"`
+	DBDeleteTask    string `envconfig:"DB_DELETE_TASK" default:"DELETE FROM public.task WHERE id = $1 AND user_id = $2"`
 }
 
 const (

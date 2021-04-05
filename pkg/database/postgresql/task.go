@@ -106,7 +106,7 @@ func (t *Task) Delete(ctx context.Context, filter storage.TaskFilter) (err error
 		return errNotFoundParam
 	}
 
-	_, err = t.db.QueryContext(ctx, t.deleteTask, *filter.ID)
+	_, err = t.db.QueryContext(ctx, t.deleteTask, *filter.ID, filter.UserID)
 	return
 }
 
