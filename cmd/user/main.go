@@ -38,7 +38,7 @@ type configuration struct {
 	DBName           string `envconfig:"DB_NAME" default:"todos"`
 	DBUser           string `envconfig:"DB_USER" default:"secret-user"`
 	DBPassword       string `envconfig:"DB_PASSWORD" default:"secret-password"`
-	DBInsertUser     string `envconfig:"DB_INSERT_USER" default:"INSERT INTO public.user(email, password, is_active)VALUES ($1, $2, $3);"`
+	DBInsertUser     string `envconfig:"DB_INSERT_USER" default:"INSERT INTO public.user(email, password, is_active)VALUES ($1, $2, $3)"`
 	DBSelectUser     string `envconfig:"DB_SELECT_USER" default:"SELECT * FROM public.user WHERE email=$1 AND password=$2"`
 	DBSelectUserList string `envconfig:"DB_SELECT_USER_LIST" default:"SELECT * FROM public.user"`
 

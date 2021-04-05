@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/geoirb/todos/pkg/todos"
 	"github.com/valyala/fasthttp"
@@ -95,13 +96,25 @@ type getTaskListTransport struct{}
 
 func (t *getTaskListTransport) DecodeRequest(req *fasthttp.Request) (token string, filter todos.Filter, err error) {
 	token = string(req.Header.Peek("Authorization"))
-	var request deleteTaskRequest
-	err = json.Unmarshal(req.Body(), &request)
-	filter = todos.Filter{
-		ID: &request.ID,
+	args := req.URI().QueryArgs()
+
+	if arg := args.Peek("id"); arg != nil {
+		id, _ := strconv.Atoi(string(arg))
+		filter.ID = &id
+	}
+
+	if arg := args.Peek("from"); arg != nil {
+		from, _ := strconv.Atoi(string(arg))
+		filter.From = &from
+	}
+
+	if arg := args.Peek("to"); arg != nil {
+		to, _ := strconv.Atoi(string(arg))
+		filter.To = &to
 	}
 	return
 }
+
 func (t *getTaskListTransport) EncodeResponse(res *fasthttp.Response, tasks []todos.TaskInfo, err error) {
 	var response getTaskListResponse
 	response.Tasks = make([]taskInfo, 0, len(tasks))

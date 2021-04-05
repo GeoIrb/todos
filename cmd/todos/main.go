@@ -34,7 +34,7 @@ type configuration struct {
 	DBName          string `envconfig:"DB_NAME" default:"todos"`
 	DBUser          string `envconfig:"DB_USER" default:"secret-user"`
 	DBPassword      string `envconfig:"DB_PASSWORD" default:"secret-password"`
-	DBInsertTask    string `envconfig:"DB_INSERT_TASK" default:"INSERT INTO public.task(user_id, title, description, deadline)VALUES ($1, $2, $3, $4);"`
+	DBInsertTask    string `envconfig:"DB_INSERT_TASK" default:"INSERT INTO public.task(user_id, title, description, deadline)VALUES ($1, $2, $3, $4)"`
 	DBSelectTask    string `envconfig:"DB_SELECT_TASK" default:"SELECT * FROM public.task WHERE user_id=$1"`
 	DBSelectOrderBy string `envconfig:"DB_SELECT_ORDER_BY" default:"deadline"`
 	DBUpdateTask    string `envconfig:"DB_SELECT_TASK" default:"UPDATE public.task SET title = $1, description = $2, deadline = $3 WHERE id = $4"`

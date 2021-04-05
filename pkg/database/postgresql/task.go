@@ -94,7 +94,7 @@ func (t *Task) Update(ctx context.Context, task storage.TaskInfo) (err error) {
 		return
 	}
 
-	_, err = t.db.QueryContext(ctx, t.updateTask, task.UserID, task.Title, task.Description, task.Deadline, task.ID)
+	_, err = t.db.QueryContext(ctx, t.updateTask, task.Title, task.Description, task.Deadline, task.ID)
 	return
 }
 func (t *Task) Delete(ctx context.Context, filter storage.TaskFilter) (err error) {
@@ -102,7 +102,7 @@ func (t *Task) Delete(ctx context.Context, filter storage.TaskFilter) (err error
 		return
 	}
 
-	if filter.ID != nil {
+	if filter.ID == nil {
 		return errNotFoundParam
 	}
 
