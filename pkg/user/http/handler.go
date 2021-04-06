@@ -7,7 +7,7 @@ import (
 )
 
 type loginServe struct {
-	svc       *user.Service
+	svc       user.Service
 	transport LoginTransport
 }
 
@@ -20,7 +20,7 @@ func (s *loginServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, auth, err)
 }
 
-func newLoginHandler(svc *user.Service, transport LoginTransport) fasthttp.RequestHandler {
+func newLoginHandler(svc user.Service, transport LoginTransport) fasthttp.RequestHandler {
 	s := loginServe{
 		svc:       svc,
 		transport: transport,
@@ -29,7 +29,7 @@ func newLoginHandler(svc *user.Service, transport LoginTransport) fasthttp.Reque
 }
 
 type getUserListServe struct {
-	svc       *user.Service
+	svc       user.Service
 	transport GetUserListTransport
 	token     token
 }
@@ -46,7 +46,7 @@ func (s *getUserListServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, users, err)
 }
 
-func newGetUserListHandler(svc *user.Service, transport GetUserListTransport, token token) fasthttp.RequestHandler {
+func newGetUserListHandler(svc user.Service, transport GetUserListTransport, token token) fasthttp.RequestHandler {
 	s := getUserListServe{
 		svc:       svc,
 		transport: transport,
@@ -56,7 +56,7 @@ func newGetUserListHandler(svc *user.Service, transport GetUserListTransport, to
 }
 
 type registrationUserServe struct {
-	svc       *user.Service
+	svc       user.Service
 	transport RegistrationUserTransport
 }
 
@@ -71,7 +71,7 @@ func (s *registrationUserServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, err)
 }
 
-func newRegistrationUserHandler(svc *user.Service, transport RegistrationUserTransport) fasthttp.RequestHandler {
+func newRegistrationUserHandler(svc user.Service, transport RegistrationUserTransport) fasthttp.RequestHandler {
 	s := registrationUserServe{
 		svc:       svc,
 		transport: transport,
@@ -80,7 +80,7 @@ func newRegistrationUserHandler(svc *user.Service, transport RegistrationUserTra
 }
 
 type createUserServe struct {
-	svc       *user.Service
+	svc       user.Service
 	transport CreateUserTransport
 }
 
@@ -95,7 +95,7 @@ func (s *createUserServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, err)
 }
 
-func newCreateUserHandler(svc *user.Service, transport CreateUserTransport) fasthttp.RequestHandler {
+func newCreateUserHandler(svc user.Service, transport CreateUserTransport) fasthttp.RequestHandler {
 	s := createUserServe{
 		svc:       svc,
 		transport: transport,

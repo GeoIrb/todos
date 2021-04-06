@@ -7,7 +7,7 @@ import (
 )
 
 type createTaskServe struct {
-	svc       *todos.Service
+	svc       todos.Service
 	transport CreateTaskTransport
 	token     token
 }
@@ -23,7 +23,7 @@ func (s *createTaskServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, err)
 }
 
-func newCreateTaskHandler(svc *todos.Service, transport CreateTaskTransport, token token) fasthttp.RequestHandler {
+func newCreateTaskHandler(svc todos.Service, transport CreateTaskTransport, token token) fasthttp.RequestHandler {
 	s := &createTaskServe{
 		svc:       svc,
 		transport: transport,
@@ -33,7 +33,7 @@ func newCreateTaskHandler(svc *todos.Service, transport CreateTaskTransport, tok
 }
 
 type updateTaskServe struct {
-	svc       *todos.Service
+	svc       todos.Service
 	transport UpdateTaskTransport
 	token     token
 }
@@ -49,7 +49,7 @@ func (s *updateTaskServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, err)
 }
 
-func newUpdateTaskHandler(svc *todos.Service, transport UpdateTaskTransport, token token) fasthttp.RequestHandler {
+func newUpdateTaskHandler(svc todos.Service, transport UpdateTaskTransport, token token) fasthttp.RequestHandler {
 	s := &updateTaskServe{
 		svc:       svc,
 		transport: transport,
@@ -59,7 +59,7 @@ func newUpdateTaskHandler(svc *todos.Service, transport UpdateTaskTransport, tok
 }
 
 type deleteTaskServe struct {
-	svc       *todos.Service
+	svc       todos.Service
 	transport DeleteTaskTransport
 	token     token
 }
@@ -75,7 +75,7 @@ func (s *deleteTaskServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, err)
 }
 
-func newDeleteTaskHandler(svc *todos.Service, transport DeleteTaskTransport, token token) fasthttp.RequestHandler {
+func newDeleteTaskHandler(svc todos.Service, transport DeleteTaskTransport, token token) fasthttp.RequestHandler {
 	s := &deleteTaskServe{
 		svc:       svc,
 		transport: transport,
@@ -85,7 +85,7 @@ func newDeleteTaskHandler(svc *todos.Service, transport DeleteTaskTransport, tok
 }
 
 type getTaskListServe struct {
-	svc       *todos.Service
+	svc       todos.Service
 	transport GetTaskListTransport
 	token     token
 }
@@ -102,7 +102,7 @@ func (s *getTaskListServe) Handler(ctx *fasthttp.RequestCtx) {
 	s.transport.EncodeResponse(&ctx.Response, tasks, err)
 }
 
-func newGetTaskListHandler(svc *todos.Service, transport GetTaskListTransport, token token) fasthttp.RequestHandler {
+func newGetTaskListHandler(svc todos.Service, transport GetTaskListTransport, token token) fasthttp.RequestHandler {
 	s := &getTaskListServe{
 		svc:       svc,
 		transport: transport,

@@ -11,7 +11,7 @@ import (
 type AuthServer struct {
 	// todo what is it?
 	rpc.UnimplementedAuthServer
-	svc *user.Service
+	svc user.Service
 }
 
 // Authorization token and return user data
@@ -25,7 +25,7 @@ func (s *AuthServer) Authorization(ctx context.Context, req *rpc.Request) (res *
 
 // NewAuthRPCServer ...
 func NewAuthRPCServer(
-	svc *user.Service,
+	svc user.Service,
 ) *AuthServer {
 	return &AuthServer{
 		svc: svc,

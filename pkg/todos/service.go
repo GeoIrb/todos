@@ -14,7 +14,7 @@ type token interface {
 	Get(ctx context.Context) (token string)
 }
 
-type Service struct {
+type service struct {
 	auth    client.Auth
 	storage storage.Task
 	token   token
@@ -28,8 +28,8 @@ func NewService(
 	token token,
 
 	logger log.Logger,
-) *Service {
-	return &Service{
+) *service {
+	return &service{
 		auth:    auth,
 		storage: storage,
 		token:   token,
@@ -38,7 +38,7 @@ func NewService(
 	}
 }
 
-func (s *Service) CreateTask(ctx context.Context, task TaskInfo) (err error) {
+func (s *service) CreateTask(ctx context.Context, task TaskInfo) (err error) {
 	logger := log.WithPrefix(s.logger, "method", "NewTask")
 
 	token := s.token.Get(ctx)
@@ -52,7 +52,7 @@ func (s *Service) CreateTask(ctx context.Context, task TaskInfo) (err error) {
 	return
 }
 
-func (s *Service) UpdateTask(ctx context.Context, task TaskInfo) (err error) {
+func (s *service) UpdateTask(ctx context.Context, task TaskInfo) (err error) {
 	logger := log.WithPrefix(s.logger, "method", "UpdateTask")
 
 	token := s.token.Get(ctx)
@@ -66,7 +66,7 @@ func (s *Service) UpdateTask(ctx context.Context, task TaskInfo) (err error) {
 	return
 }
 
-func (s *Service) DeleteTask(ctx context.Context, filter Filter) (err error) {
+func (s *service) DeleteTask(ctx context.Context, filter Filter) (err error) {
 	logger := log.WithPrefix(s.logger, "method", "DeleteTask")
 
 	token := s.token.Get(ctx)
@@ -80,7 +80,7 @@ func (s *Service) DeleteTask(ctx context.Context, filter Filter) (err error) {
 	return
 }
 
-func (s *Service) GetTaskList(ctx context.Context, filter Filter) (tasks []TaskInfo, err error) {
+func (s *service) GetTaskList(ctx context.Context, filter Filter) (tasks []TaskInfo, err error) {
 	logger := log.WithPrefix(s.logger, "method", "GetTaskList")
 	token := s.token.Get(ctx)
 	if filter.UserID, err = s.auth.Authorization(ctx, token); err != nil {

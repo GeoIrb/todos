@@ -15,7 +15,7 @@ var _ Auth = &AuthClientMock{}
 
 // Authorization ...
 func (m *AuthClientMock) Authorization(ctx context.Context, token string) (id int, err error) {
-	args := m.Called(ctx, token)
+	args := m.Called(token)
 
 	var ok bool
 	if id, ok = args.Get(0).(int); ok {

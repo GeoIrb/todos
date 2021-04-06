@@ -12,6 +12,6 @@ type SenderMock struct {
 }
 
 func (m *SenderMock) Send(ctx context.Context, dst, message string) (err error) {
-	args := m.Called(ctx, dst, message)
+	args := m.Called(dst, message)
 	return args.Error(0)
 }
