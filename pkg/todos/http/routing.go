@@ -20,7 +20,7 @@ type token interface {
 	Put(ctx context.Context, token string) context.Context
 }
 
-func Routing(router *router.Router, svc *todos.Service, token token) {
+func Routing(router *router.Router, svc todos.Service, token token) {
 	router.Handle(http.MethodPost, createTaskURI, newCreateTaskHandler(svc, newCreateTaskTransport(), token))
 	router.Handle(http.MethodPatch, updateTaskURI, newUpdateTaskHandler(svc, newUpdateTaskTransport(), token))
 	router.Handle(http.MethodDelete, deleteTaskURI, newDeleteTaskHandler(svc, newDeleteTaskTransport(), token))

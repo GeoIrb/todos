@@ -25,7 +25,7 @@ type jwt interface {
 	Parse(ctx context.Context, token string) (isValid bool, id int, err error)
 }
 
-type Service struct {
+type service struct {
 	storage storage.User
 	email   sender.Email
 
@@ -45,8 +45,8 @@ func NewService(
 	jwt jwt,
 
 	logger log.Logger,
-) *Service {
-	return &Service{
+) *service {
+	return &service{
 		storage: storage,
 		email:   email,
 		hash:    hash,
@@ -57,7 +57,7 @@ func NewService(
 }
 
 // Registration new user in system.
-func (s *Service) Registration(ctx context.Context, info Registartion) error {
+func (s *service) Registration(ctx context.Context, info Registartion) error {
 	logger := log.WithPrefix(s.logger, "method", "Registration", "email", info.Email)
 
 	filter := storage.UserFilter{
@@ -94,7 +94,7 @@ func (s *Service) Registration(ctx context.Context, info Registartion) error {
 }
 
 // Login user in system.
-func (s *Service) Login(ctx context.Context, info Login) (auth Auth, err error) {
+func (s *service) Login(ctx context.Context, info Login) (auth Auth, err error) {
 	logger := log.WithPrefix(s.logger, "method", "Login", "email", info.Email)
 
 	hashPassword := s.hash.Password(ctx, info.Password)
@@ -126,7 +126,7 @@ func (s *Service) Login(ctx context.Context, info Login) (auth Auth, err error) 
 }
 
 // Create user in system.
-func (s *Service) Create(ctx context.Context, info Create) (err error) {
+func (s *service) Create(ctx context.Context, info Create) (err error) {
 	logger := log.WithPrefix(s.logger, "method", "Create", "email", info.Email)
 
 	hashPassword := s.hash.Password(ctx, info.NewPassword)
@@ -155,7 +155,7 @@ func (s *Service) Create(ctx context.Context, info Create) (err error) {
 }
 
 // Authorization token.
-func (s *Service) Authorization(ctx context.Context, token string) (id int, err error) {
+func (s *service) Authorization(ctx context.Context, token string) (id int, err error) {
 	parts := strings.Split(token, " ")
 	if len(parts) != 2 && parts[0] != "Bearer" {
 		err = ErrFailedAuthenticate
@@ -170,7 +170,7 @@ func (s *Service) Authorization(ctx context.Context, token string) (id int, err 
 }
 
 // GetUserList by filter.
-func (s *Service) GetUserList(ctx context.Context, filter Filter) (users []UserInfo, err error) {
+func (s *service) GetUserList(ctx context.Context, filter Filter) (users []UserInfo, err error) {
 	logger := log.WithPrefix(s.logger, "method", "GetUserList")
 
 	token := s.token.Get(ctx)

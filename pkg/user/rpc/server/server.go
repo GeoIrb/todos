@@ -9,7 +9,7 @@ import (
 
 // AuthServer rpc for auth service
 type AuthServer struct {
-	svc *user.Service
+	svc user.Service
 	// todo what is it?
 	rpc.UnimplementedAuthServer
 }
@@ -25,7 +25,7 @@ func (s *AuthServer) Authorization(ctx context.Context, req *rpc.Request) (res *
 
 // NewAuthRPCServer ...
 func NewAuthRPCServer(
-	svc *user.Service,
+	svc user.Service,
 ) *AuthServer {
 	return &AuthServer{
 		svc: svc,
