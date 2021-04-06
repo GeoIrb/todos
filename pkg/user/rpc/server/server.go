@@ -9,9 +9,9 @@ import (
 
 // AuthServer rpc for auth service
 type AuthServer struct {
-	svc *user.Service
 	// todo what is it?
 	rpc.UnimplementedAuthServer
+	svc *user.Service
 }
 
 // Authorization token and return user data
