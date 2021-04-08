@@ -121,5 +121,3 @@ definitions:
         type: "integer"
       email:
         type: "string"
-    xml:
-      name: "User"

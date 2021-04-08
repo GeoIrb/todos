@@ -65,11 +65,11 @@ func TestCreateTask(t *testing.T) {
 		},
 	}
 
+	tokenMock := &tt.TokenMock{}
+	tokenMock.On("Put", testToken).Return(nil)
+
 	for _, test := range testCreateTaskList {
 		t.Run(test.name, func(t *testing.T) {
-			tokenMock := &tt.TokenMock{}
-			tokenMock.On("Put", testToken).Return(nil)
-
 			svcMock := &todos.ServiceMock{}
 			svcMock.On("CreateTask", testTask).
 				Return(test.svcReturn)
