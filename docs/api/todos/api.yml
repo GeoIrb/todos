@@ -1,0 +1,137 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "API Todos"
+tags:
+  - name: "task"
+    description: "Операции с задачами"
+schemes:
+  - "http"
+paths:
+  /task:
+    post:
+      tags:
+        - "task"
+      summary: "Новая задача"
+      security:
+        - BearerAuth: [user]
+      description: "Создание задачи"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New task"
+          required: true
+          schema:
+            $ref: "#/definitions/NewTask"
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Ошибка аутентификации"
+    patch:
+      tags:
+        - "task"
+      summary: "Обновление задачи"
+      security:
+        - BearerAuth: [user]
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Update task"
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateTask"
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Ошибка аутентификации"
+    delete:
+      tags:
+        - "task"
+      summary: "Удаление задачи"
+      security:
+        - BearerAuth: [user]
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Update task"
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteTask"
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Ошибка аутентификации"
+    get:
+      tags:
+        - "user"
+      summary: "Получение списка задач"
+      security:
+        - BearerAuth: [user]
+      parameters:
+        - name: "id"
+          in: "query"
+          type: "integer"
+          description: "ID запрашиваемой задачи"
+        - name: "from"
+          in: "query"
+          type: "integer"
+          description: "Начала интервала дедлайнов запрашиваемых задач"
+        - name: "to"
+          in: "query"
+          type: "integer"
+          description: "Конец интервала дедлайнов запрашиваемых задач"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Task"
+definitions:
+  NewTask:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+      description:
+        type: "string"
+      deadline:
+        type: "integer"
+  UpdateTask:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      deadline:
+        type: "integer"
+  DeleteTask:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+  Task:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      user_id:
+        type: "integer"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      deadline:
+        type: "integer"

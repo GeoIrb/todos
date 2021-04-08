@@ -78,15 +78,13 @@ Users
     - [ ] Тесты маршрутов
     - [ ] Выделить аутентификацию в отдельный middleware
   - [X] Транспорт RPC
-  - [ ] Тесты
 - [ ] Todos service
   - [X] Код
   - [ ] Транспорт
     - [X] Код
     - [ ] Тесты маршрутов
     - [ ] Выделить аутентификацию в отдельный middleware
-  - [ ] Тесты
-- [ ] Storage
+- [X] Storage
   - [X] Cache
     - [X] Код
     - [X] Интерфейс
@@ -96,19 +94,16 @@ Users
     - [X] Код Task
     - [X] Интерфейс
   - [X] Интерфейс
-  - [ ] Тесты
-- [ ] JWT
+- [X] JWT
   - [X] Код
-  - [ ] Тесты
-- [ ] Password hash
+- [X] Password hash
   - [X] Код
-  - [ ] Тесты
 - [X] Sender 
   - [X] SMTP
     - [X] Код 
   - [X] Интерфейс
   - [X] Мок
-- [ ] Документация
-  - [ ] API Todos
+- [X] Документация
   - [X] [API User](docs/api/user/api.yml)
+  - [X] [API Todos](docs/api/todos/api.yml)
 - [X] docker-compose

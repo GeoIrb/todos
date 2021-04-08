@@ -2,7 +2,6 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "API Todos"
-host: "petstore.swagger.io"
 tags:
   - name: "user"
     description: "Операции с пользователем"
@@ -73,9 +72,9 @@ paths:
       security:
         - BearerAuth: [user]
       parameters:
-        - name: "query"
+        - name: "id"
           in: "query"
-          type: "string"
+          type: "integer"
           description: "ID запрашиваемого пользователя"
         - name: "email"
           in: "query"
