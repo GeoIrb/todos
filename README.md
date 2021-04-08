@@ -109,4 +109,6 @@ Users
   - [X] Интерфейс
   - [X] Мок
 - [ ] Документация
+  - [ ] API Todos
+  - [X] [API User](docs/api/user/api.yml)
 - [X] docker-compose

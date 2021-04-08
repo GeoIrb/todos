@@ -67,47 +67,47 @@ func (t *getUserListTransport) EncodeResponse(res *fasthttp.Response, users []us
 	responseBuilder(res, response, err)
 }
 
-type RegistrationUserTransport interface {
+type NewUserTransport interface {
 	DecodeRequest(req *fasthttp.Request) (info user.Registartion, err error)
 	EncodeResponse(res *fasthttp.Response, err error)
 }
 
-type registrationUserTransport struct{}
+type newUserTransport struct{}
 
-func newRegistrationUserTransport() RegistrationUserTransport {
-	return &registrationUserTransport{}
+func newNewUserTransport() NewUserTransport {
+	return &newUserTransport{}
 }
 
-func (t *registrationUserTransport) DecodeRequest(req *fasthttp.Request) (info user.Registartion, err error) {
+func (t *newUserTransport) DecodeRequest(req *fasthttp.Request) (info user.Registartion, err error) {
 	var request registrationRequest
 	err = json.Unmarshal(req.Body(), &request)
 	info = user.Registartion(request)
 	return
 }
 
-func (t *registrationUserTransport) EncodeResponse(res *fasthttp.Response, err error) {
+func (t *newUserTransport) EncodeResponse(res *fasthttp.Response, err error) {
 	responseBuilder(res, nil, err)
 }
 
-type CreateUserTransport interface {
+type ActivateUserTransport interface {
 	DecodeRequest(req *fasthttp.Request) (info user.Create, err error)
 	EncodeResponse(res *fasthttp.Response, err error)
 }
 
-type createUserTransport struct{}
+type activateUserTransport struct{}
 
-func newCreateUserTransport() CreateUserTransport {
-	return &createUserTransport{}
+func newActivateUserTransport() ActivateUserTransport {
+	return &activateUserTransport{}
 }
 
-func (t *createUserTransport) DecodeRequest(req *fasthttp.Request) (info user.Create, err error) {
+func (t *activateUserTransport) DecodeRequest(req *fasthttp.Request) (info user.Create, err error) {
 	var request createRequest
 	err = json.Unmarshal(req.Body(), &request)
 	info = user.Create(request)
 	return
 }
 
-func (t *createUserTransport) EncodeResponse(res *fasthttp.Response, err error) {
+func (t *activateUserTransport) EncodeResponse(res *fasthttp.Response, err error) {
 	responseBuilder(res, nil, err)
 }
 

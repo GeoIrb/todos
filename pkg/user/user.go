@@ -5,7 +5,7 @@ import (
 )
 
 type Service interface {
-	Registration(ctx context.Context, info Registartion) error
+	New(ctx context.Context, info Registartion) error
 	Login(ctx context.Context, info Login) (auth Auth, err error)
 	Create(ctx context.Context, info Create) (err error)
 	Authorization(ctx context.Context, token string) (id int, err error)

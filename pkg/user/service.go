@@ -56,9 +56,9 @@ func NewService(
 	}
 }
 
-// Registration new user in system.
-func (s *service) Registration(ctx context.Context, info Registartion) error {
-	logger := log.WithPrefix(s.logger, "method", "Registration", "email", info.Email)
+// New new user in system.
+func (s *service) New(ctx context.Context, info Registartion) error {
+	logger := log.WithPrefix(s.logger, "method", "New", "email", info.Email)
 
 	filter := storage.UserFilter{
 		Email: &info.Email,
