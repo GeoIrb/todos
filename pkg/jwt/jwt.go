@@ -41,7 +41,7 @@ func (j *JWT) CreateToken(ctx context.Context, id int) (token string, err error)
 // Parse token
 func (j *JWT) Parse(ctx context.Context, token string) (isValid bool, id int, err error) {
 	var (
-		jwtToken = &jwt.Token{}
+		jwtToken *jwt.Token
 		claims   = &tokenClaims{}
 		keyFunc  = func(token *jwt.Token) (interface{}, error) {
 			return j.secret, nil

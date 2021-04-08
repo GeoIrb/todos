@@ -6,4 +6,4 @@ proto:
     pkg/user/rpc/rpc.proto
 
 lint:
-	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint golangci-lint run -v -E maligned
+	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint golangci-lint run -v -E maligned 
