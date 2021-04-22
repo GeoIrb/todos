@@ -45,7 +45,7 @@ func NewService(
 	jwt jwt,
 
 	logger log.Logger,
-) *service {
+) Service {
 	return &service{
 		storage: storage,
 		email:   email,

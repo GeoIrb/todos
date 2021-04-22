@@ -26,7 +26,7 @@ func New(
 }
 
 // CreateToken to user.
-func (j *JWT) CreateToken(ctx context.Context, id int) (token string, err error) {
+func (j *JWT) CreateToken(ctx context.Context, id int) (string, error) {
 	accessClaims := &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
 			Id:        strconv.Itoa(id),
@@ -34,8 +34,7 @@ func (j *JWT) CreateToken(ctx context.Context, id int) (token string, err error)
 		},
 	}
 
-	token, err = jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), accessClaims).SignedString(j.secret)
-	return
+	return jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), accessClaims).SignedString(j.secret)
 }
 
 // Parse token

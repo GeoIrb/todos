@@ -28,7 +28,7 @@ func NewService(
 	token token,
 
 	logger log.Logger,
-) *service {
+) Service {
 	return &service{
 		auth:    auth,
 		storage: storage,
